@@ -1,0 +1,11 @@
+agents/: Contains all the agent definitions. Agents are what interact using your tools and execute tasks.
+tools/: This directory stores the tools that your agents will use, like the BlockchainTransactionTool. Each tool can be a separate Python module.
+contracts/: Smart contracts written in Solidity along with their compiled ABIs for use in the application.
+config/: Stores configuration files that manage settings like network URLs or API keys (kept out of source control with .env).
+tests/: Contains all your unit and integration tests ensuring your agents and tools work as expected before deployment.
+utils/: Utility functions that can be used throughout the project for common tasks, especially related to web3 functionalities.
+data/: Used for storing static files such as JSON data or other resources needed by the application.
+logs/: Dedicated folder for application logs to track behavior and issues.
+requirements.txt: Specifies all Python dependencies required for the project. Use pip to install these dependencies.
+.env: An environment file for storing sensitive keys and configuration options securely and out of version control.
+main.py: The main entry point of the application where the setup and running of agents occur.

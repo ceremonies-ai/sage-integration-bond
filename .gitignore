@@ -6,6 +6,37 @@ __pycache__/
 # C extensions
 *.so
 
+# Logs
+logs/
+
+# Data
+data/
+
+# Contract artifacts
+build/contracts/
+
+# Configurations
+config/*.json
+config/*.yaml
+
+# secrets
+*.key
+secret_*.json
+
+# Temporary files
+*.tmp
+*.temp
+
+# Blockchain development tools configurations
+truffle-config.js
+hardhat.config.js
+
+# Backup files
+*~
+*.bak
+*.swp
+
+
 # Distribution / packaging
 .Python
 build/
