@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from bondai.tools import Tool
 from web3 import Web3, HTTPProvider
 from web3.middleware import geth_poa_middleware
+from dotenv import load_dotenv
+
 
 TOOL_NAME = "BlockchainTransactionTool"
 TOOL_DESCRIPTION = """
@@ -38,17 +40,22 @@ class BlockchainTransactionTool(Tool):
         func = getattr(self.contract.functions, function_name)
         if not func:
             raise ValueError(f"Function {function_name} not found in the contract.")
+        
+        load_dotenv()
+        private_key = os.getenv('PRIVATE_KEY')
+        if not private_key:
+            raise EnvironmentError("PRIVATE_KEY environment variable not set.")
 
         # Setup transaction parameters
         tx_params = {
             'from': agent_address,
             'nonce': self.web3.eth.get_transaction_count(agent_address),
             'gas': 2000000,
-            'gasPrice': self.web3.toWei('50', 'gwei')
+            'gasPrice': self.web3.to_wei('50', 'gwei')
         }
 
-        tx = func(**parameters).buildTransaction(tx_params)
-        signed_tx = self.web3.eth.account.sign_transaction(tx, private_key='your_private_key_here')
+        tx = func(**parameters).build_transaction(tx_params)
+        signed_tx = self.web3.eth.account.sign_transaction(tx, private_key=private_key)
         tx_hash = self.web3.eth.send_raw_transaction(signed_tx.rawTransaction)
 
         return f"Transaction submitted. TX Hash: {tx_hash.hex()}"
