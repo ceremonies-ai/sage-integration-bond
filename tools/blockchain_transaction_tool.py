@@ -33,7 +33,7 @@ class BlockchainTransactionTool(Tool):
             self.web3.middleware_onion.inject(geth_poa_middleware, layer=0)
         self.contract = self.web3.eth.contract(address=CONTRACT_ADDRESS, abi=CONTRACT_ABI)
 
-    def run(self, function_name: str, parameters: dict, agent_address: str = None):
+    def run(self, function_name: str, parameters: dict, agent_address: str):
         if not self.web3.is_connected():
             raise ConnectionError("Failed to connect to Ethereum network.")
 
@@ -46,7 +46,7 @@ class BlockchainTransactionTool(Tool):
         if not private_key:
             raise EnvironmentError("PRIVATE_KEY environment variable not set.")
 
-        # Setup transaction parameters
+        # Prepare the transaction parameters
         tx_params = {
             'from': agent_address,
             'nonce': self.web3.eth.get_transaction_count(agent_address),
@@ -54,8 +54,17 @@ class BlockchainTransactionTool(Tool):
             'gasPrice': self.web3.to_wei('50', 'gwei')
         }
 
-        tx = func(**parameters).build_transaction(tx_params)
-        signed_tx = self.web3.eth.account.sign_transaction(tx, private_key=private_key)
+        # Adjusting the way arguments are handled based on the function
+        if function_name == "initiateTransaction":
+            args = [parameters[param] for param in ['seller', 'unitsOfService']]
+        elif function_name == "registerAgent":
+            args = [parameters[param] for param in ['contentDescription', 'price']]
+        else:
+            raise NotImplementedError(f"Function {function_name} is not supported by this tool.")
+
+        # Build and sign the transaction
+        tx = func(*args).build_transaction(tx_params)
+        signed_tx = self.web3.eth.account.sign_transaction(tx, private_key)
         tx_hash = self.web3.eth.send_raw_transaction(signed_tx.rawTransaction)
 
         return f"Transaction submitted. TX Hash: {tx_hash.hex()}"
