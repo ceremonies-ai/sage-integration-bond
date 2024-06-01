@@ -38,6 +38,7 @@ This repository is intended as a simple means of demonstrating agentic interacti
    ```
 
 3. **Install dependencies**:
+
    Install BondAI as per directions found here: [https://bondai.dev/docs/getting-started](https://bondai.dev/docs/getting-started)
    ```bash
    pip install -r requirements.txt
