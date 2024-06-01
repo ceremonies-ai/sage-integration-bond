@@ -1,3 +1,4 @@
+#tools/blockchain_transaction_tool.py
 import json
 import os
 from pydantic import BaseModel
@@ -29,9 +30,19 @@ class BlockchainTransactionTool(Tool):
     def __init__(self):
         super().__init__(TOOL_NAME, TOOL_DESCRIPTION, parameters=Parameters)
         self.web3 = Web3(HTTPProvider(RPC_ADDRESS))
-        if self.web3.net.version == "4":  # Assuming Rinkeby for PoA middleware requirement
+        if self.web3.net.version == "4":
             self.web3.middleware_onion.inject(geth_poa_middleware, layer=0)
         self.contract = self.web3.eth.contract(address=CONTRACT_ADDRESS, abi=CONTRACT_ABI)
+        self.nonce_tracker = {}
+
+    def get_nonce(self, address):
+        # Use the stored nonce if available, else get it from the network
+        if address not in self.nonce_tracker:
+            self.nonce_tracker[address] = self.web3.eth.get_transaction_count(address)
+        return self.nonce_tracker[address]
+
+    def increment_nonce(self, address):
+        self.nonce_tracker[address] += 1
 
     def run(self, function_name: str, parameters: dict, agent_address: str):
         if not self.web3.is_connected():
@@ -40,31 +51,30 @@ class BlockchainTransactionTool(Tool):
         func = getattr(self.contract.functions, function_name)
         if not func:
             raise ValueError(f"Function {function_name} not found in the contract.")
-        
+
         load_dotenv()
         private_key = os.getenv('PRIVATE_KEY')
         if not private_key:
             raise EnvironmentError("PRIVATE_KEY environment variable not set.")
 
-        # Prepare the transaction parameters
+        nonce = self.get_nonce(agent_address)
+
         tx_params = {
             'from': agent_address,
-            'nonce': self.web3.eth.get_transaction_count(agent_address),
+            'nonce': nonce,
             'gas': 2000000,
             'gasPrice': self.web3.to_wei('50', 'gwei')
         }
 
-        # Adjusting the way arguments are handled based on the function
-        if function_name == "initiateTransaction":
-            args = [parameters[param] for param in ['seller', 'unitsOfService']]
-        elif function_name == "registerAgent":
-            args = [parameters[param] for param in ['contentDescription', 'price']]
-        else:
-            raise NotImplementedError(f"Function {function_name} is not supported by this tool.")
+        args = [parameters[param] for param in parameters]  # Handle all parameters dynamically
 
-        # Build and sign the transaction
         tx = func(*args).build_transaction(tx_params)
         signed_tx = self.web3.eth.account.sign_transaction(tx, private_key)
         tx_hash = self.web3.eth.send_raw_transaction(signed_tx.rawTransaction)
 
-        return f"Transaction submitted. TX Hash: {tx_hash.hex()}"
+        self.increment_nonce(agent_address)
+
+        # Wait for the transaction to be mined
+        receipt = self.web3.eth.wait_for_transaction_receipt(tx_hash)
+
+        return f"Transaction submitted and mined. TX Hash: {tx_hash.hex()}, Block: {receipt.blockNumber}"
