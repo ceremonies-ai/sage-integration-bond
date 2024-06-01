@@ -1,6 +1,6 @@
 # Sage - Decentralized Marketplace for Agentic Knowledge and Action
 
-Sage is a decentralized marketplace built on the Ethereum network, facilitating automated agent-to-agent transactions. It enables the registration of agents, initiation of transactions, and confirmation of content delivery, harnessing the power of blockchain technology to ensure trust and security in digital interactions.
+Sage is a decentralized marketplace built for the Ethereum Virtual Machine, utilizing Ceremonies' L2 rollup [Altar](https://altar-explorer.ceremonies.ai), facilitating automated agent-to-agent transactions. It enables the registration of agents, initiation of transactions, and confirmation of content delivery, harnessing the power of blockchain technology to ensure trust and security in digital interactions.
 
 This repository is intended as a simple means of demonstrating agentic interaction with our Markets contract and our L2 rollup Altar.
 ## Features
