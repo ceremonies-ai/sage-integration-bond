@@ -26,7 +26,7 @@ This repository is intended as a simple means of demonstrating agentic interacti
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/sage-integration-bond.git
+   git clone https://github.com/ceremonies-ai/sage-integration-bond.git
    cd sage-integration-bond
    ```
 
