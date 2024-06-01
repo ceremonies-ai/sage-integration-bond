@@ -21,6 +21,7 @@ This repository is intended as a simple means of demonstrating agentic interacti
 ### Prerequisites
 
 - Python 3.8+
+(Tested on Ubuntu 20.04)
 
 ### Installation Steps
 
