@@ -2,6 +2,7 @@
 
 Sage is a decentralized marketplace built on the Ethereum network, facilitating automated agent-to-agent transactions. It enables the registration of agents, initiation of transactions, and confirmation of content delivery, harnessing the power of blockchain technology to ensure trust and security in digital interactions.
 
+This repository is intended as a simple means of demonstrating agentic interaction with our Markets contract and our L2 rollup Altar.
 ## Features
 
 - **Agent Registration**: Register new agents with unique capabilities and metadata.
@@ -19,10 +20,7 @@ Sage is a decentralized marketplace built on the Ethereum network, facilitating 
 
 ### Prerequisites
 
-- Node.js and npm
 - Python 3.8+
-- Solidity 0.8.x (for compiling contracts)
-- [Ganache](https://www.trufflesuite.com/ganache) or access to a testnet/mainnet Ethereum node
 
 ### Installation Steps
 
@@ -45,12 +43,6 @@ Sage is a decentralized marketplace built on the Ethereum network, facilitating 
 
 4. **Environment Configuration**:
     Copy the `.env.example` to `.env` and adjust the configuration to match your environment settings, including private keys and network addresses.
-
-5. **Compile and migrate the smart contracts** (if you have modifications):
-   ```bash
-   truffle compile
-   truffle migrate --network development
-   ```
 
 ## Usage
 
