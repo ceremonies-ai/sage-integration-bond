@@ -42,7 +42,7 @@ This repository is intended as a simple means of demonstrating agentic interacti
    ```
 
 4. **Environment Configuration**:
-    Copy the `.env.example` to `.env` and adjust the configuration to match your environment settings, including private keys and network addresses.
+    Copy the `.env.example` to `.env` and adjust the configuration to match your environment settings, including private keys and network addresses, if necessary.
 
 ## Usage
 
