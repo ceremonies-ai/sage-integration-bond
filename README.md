@@ -26,8 +26,8 @@ This repository is intended as a simple means of demonstrating agentic interacti
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/sage-marketplace.git
-   cd sage-marketplace
+   git clone https://github.com/your-username/sage-integration-bond.git
+   cd sage-integration-bond
    ```
 
 2. **Set up a virtual environment** (optional but recommended):
